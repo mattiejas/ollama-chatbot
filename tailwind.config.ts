@@ -17,7 +17,7 @@ export default {
       },
       animation: {
         cursor: "cursor 1s ease-in-out infinite",
-        fadeIn: "fadeIn 0.5s ease-in-out forwards",
+        fadeIn: "fadeIn 0.5s ease-out forwards",
       },
     },
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatState, Model } from "../types/chat";
+import { ChatState, Message, Model } from "../types/chat";
 import { useEffect, useRef, useState } from "react";
 
 import ChatInput from "./ChatInput";
@@ -37,7 +37,7 @@ export default function Chat({ models }: ChatProps) {
       role: "user",
       content: input,
       timestamp: Date.now(),
-    };
+    } satisfies Message;
 
     setChatState((prev) => ({
       ...prev,
@@ -64,7 +64,7 @@ export default function Chat({ models }: ChatProps) {
         role: "assistant",
         content: "",
         timestamp: Date.now(),
-      };
+      } satisfies Message;
 
       setChatState((prev) => ({
         ...prev,
@@ -104,22 +104,27 @@ export default function Chat({ models }: ChatProps) {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-4xl mx-auto p-4">
-      <MessageList
-        messages={chatState.messages}
-        isLoading={chatState.isLoading}
-        error={chatState.error}
-      />
-      <div ref={messagesEndRef} />
-      <ChatInput
-        models={models}
-        selectedModel={selectedModel}
-        input={input}
-        isLoading={chatState.isLoading}
-        onModelChange={setSelectedModel}
-        onInputChange={setInput}
-        onSubmit={handleSubmit}
-      />
+    <div className="flex flex-col h-screen bg-gray-50">
+      <div className="flex-1 overflow-hidden container max-w-4xl mx-auto p-16">
+        <header className="flex justify-between items-center pb-4">
+          <h2 className="text-2xl font-semibold text-gray-800">Ollama Chatbot</h2>
+        </header>
+        <div className="flex flex-col h-full bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <MessageList messages={chatState.messages} isLoading={chatState.isLoading} error={chatState.error} />
+          <div ref={messagesEndRef} />
+          <div className="border-t border-gray-100 bg-white p-4">
+            <ChatInput
+              models={models}
+              selectedModel={selectedModel}
+              input={input}
+              isLoading={chatState.isLoading}
+              onModelChange={setSelectedModel}
+              onInputChange={setInput}
+              onSubmit={handleSubmit}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
